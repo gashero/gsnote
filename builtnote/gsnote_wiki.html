@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>gsnote笔记系统</title>
+<--- Cannot embed stylesheet '_rst.css': No such file or directory. --->
+</head>
+<body>
+<div class="document" id="gsnote">
+<h1 class="title">gsnote笔记系统</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr class="field"><th class="docinfo-name">作者:</th><td class="field-body">gashero</td>
+</tr>
+<tr class="field"><th class="docinfo-name">日期:</th><td class="field-body">2019-11-29</td>
+</tr>
+<tr class="field"><th class="docinfo-name">地址:</th><td class="field-body"><a class="reference external" href="https://github.com/gashero/gsnote">https://github.com/gashero/gsnote</a></td>
+</tr>
+</tbody>
+</table>
+<div class="contents topic" id="id1">
+<p class="topic-title first">目录</p>
+<ul class="auto-toc simple">
+<li><a class="reference internal" href="#id2" id="id14">1&nbsp;&nbsp;&nbsp;简介</a></li>
+<li><a class="reference internal" href="#id3" id="id15">2&nbsp;&nbsp;&nbsp;基础功能</a><ul class="auto-toc">
+<li><a class="reference internal" href="#id4" id="id16">2.1&nbsp;&nbsp;&nbsp;gsnote是什么</a></li>
+<li><a class="reference internal" href="#id5" id="id17">2.2&nbsp;&nbsp;&nbsp;目录</a></li>
+<li><a class="reference internal" href="#id6" id="id18">2.3&nbsp;&nbsp;&nbsp;构建</a></li>
+<li><a class="reference internal" href="#restructuredtext" id="id19">2.4&nbsp;&nbsp;&nbsp;reStructuredText</a></li>
+<li><a class="reference internal" href="#id7" id="id20">2.5&nbsp;&nbsp;&nbsp;快速入门</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id8" id="id21">3&nbsp;&nbsp;&nbsp;使用规范</a></li>
+<li><a class="reference internal" href="#id9" id="id22">4&nbsp;&nbsp;&nbsp;笔记统计功能</a></li>
+<li><a class="reference internal" href="#id10" id="id23">5&nbsp;&nbsp;&nbsp;日志、演讲稿</a></li>
+<li><a class="reference internal" href="#id11" id="id24">6&nbsp;&nbsp;&nbsp;版本库、同步建议</a></li>
+<li><a class="reference internal" href="#id12" id="id25">7&nbsp;&nbsp;&nbsp;绘图功能</a></li>
+<li><a class="reference internal" href="#id13" id="id26">8&nbsp;&nbsp;&nbsp;数学公式</a></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h1><a class="toc-backref" href="#id14">1&nbsp;&nbsp;&nbsp;简介</a></h1>
+<p>本文档记录gsnote笔记系统的使用，按章节开源到 <a class="reference external" href="https://github.com/gashero/gsnote/wiki">https://github.com/gashero/gsnote/wiki</a> 。</p>
+</div>
+<div class="section" id="id3">
+<h1><a class="toc-backref" href="#id15">2&nbsp;&nbsp;&nbsp;基础功能</a></h1>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id16">2.1&nbsp;&nbsp;&nbsp;gsnote是什么</a></h2>
+<p>gsnote是一套个人笔记管理系统，用于更好的管理个人笔记，其中一些功能可以对记录笔记的行为形成正向激励，使得自己的个人知识库更加完善。</p>
+<p>主要功能特性：</p>
+<ol class="arabic simple">
+<li>基于reStructuredText文本标记语言</li>
+<li>完善的统计功能，使得自己的笔记可以更好的量化</li>
+<li>特定目录用于每日记录</li>
+<li>支持特定目录编译为s5演讲稿</li>
+<li>支持graphviz内嵌代码并转换为html内嵌SVG图</li>
+<li>支持内嵌SVG代码转换为html内嵌SVG图</li>
+<li>支持Python Pillow库代码生成图片</li>
+<li>支持数学公式，基于mathjax库</li>
+</ol>
+</div>
+<div class="section" id="id5">
+<h2><a class="toc-backref" href="#id17">2.2&nbsp;&nbsp;&nbsp;目录</a></h2>
+<p>gsnote早期是个人笔记工具，过程中有些硬编码的目录。笔记的源码需放在 <tt class="docutils literal">gsnote</tt> 目录中，笔记编译生成html文件需放在 <tt class="docutils literal">builtnote</tt> 目录中。 <tt class="docutils literal">gsnote</tt> 目录和 <tt class="docutils literal">builtnote</tt> 目录应该放在同一目录下。</p>
+<p>每一篇笔记所引用的图片，需放在buildnote目录下，对应笔记所在目录的 <tt class="docutils literal">_images</tt> 目录内，文件名应该尽量保持与笔记名字相同加后缀的方式方便管理。避免不同笔记引用相同的图片。</p>
+<p>脚本 <tt class="docutils literal">gsnote.py</tt> 应该放在 <tt class="docutils literal">gsnote/</tt> 目录内，主要用于笔记的统计，以及若干警告。脚本 <tt class="docutils literal">builtnote.py</tt> 应该放在 <tt class="docutils literal">builtnote/</tt> 目录内，用于构建笔记。</p>
+</div>
+<div class="section" id="id6">
+<h2><a class="toc-backref" href="#id18">2.3&nbsp;&nbsp;&nbsp;构建</a></h2>
+<p>要将笔记源码构建生成html文件，只需要切换进入 <tt class="docutils literal">builtnote/</tt> 目录，然后执行:</p>
+<pre class="literal-block">
+./builtnote.py
+</pre>
+<p>就会将整个笔记源码目录扫描，找到有更新的笔记进行编译。并生成整体目录结构和索引。通常只有几篇笔记有更新时，构建时间低于1秒，所以推荐使用。</p>
+<p>如果需要编译特定的笔记，也可以将笔记的html文件名传入作为参数，这样运行速度更快:</p>
+<pre class="literal-block">
+./builtnote.py hello/world.html
+</pre>
+<p>构建完成后在 <tt class="docutils literal">builtnote/index.html</tt> 可以作为个人笔记系统的入口。即可以直接用浏览器访问，点击进入查看每一篇笔记，也可以用http服务器来供内网分享，一个简单的http服务器可以在切换到 <tt class="docutils literal">builtnote/</tt> 目录后执行:</p>
+<pre class="literal-block">
+python -m SimpleHTTPServer
+</pre>
+<p>这样就可以在其他机器上使用浏览器访问ip:port的方式来查看自己的整个笔记系统了。</p>
+</div>
+<div class="section" id="restructuredtext">
+<h2><a class="toc-backref" href="#id19">2.4&nbsp;&nbsp;&nbsp;reStructuredText</a></h2>
+<p>reStructuredText，简称rest，是一种文本标记语言，通过特定格式的纯文本来定义文本内容的格式和含义。这样生成的笔记，对vim一类的编辑器是默认带有语法高亮支持的，使得即便是不通过浏览器而仅仅用vim编辑器也能比较好的浏览笔记系统。这在没有图形GUI的环境里，比如服务器上，也能很好的使用。</p>
+<p>rest最初是 <a class="reference external" href="http://docutils.sourceforge.net/">docutils</a> 项目的一部分。</p>
+<p>rest的入门可以参考 <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html">A ReStructuredText Primer</a> 。</p>
+<p>最简单而常用的几个格式就可以覆盖大多数需求了。</p>
+<p>笔记的标题:</p>
+<pre class="literal-block">
+=============
+笔记的标题
+=============
+</pre>
+<p>自动生成章节编号和目录:</p>
+<pre class="literal-block">
+.. contents:: 目录
+.. sectnum::
+</pre>
+<p>一级标题、二级标题、三级标题:</p>
+<pre class="literal-block">
+一级标题
+==========
+
+二级标题
+----------
+
+三级标题
+~~~~~~~~~~
+</pre>
+<p>引用图片:</p>
+<pre class="literal-block">
+.. image:: _images/picture.jpg
+</pre>
+<p>其他略常用的也就是表格、链接、块引用几个，尽管文档看起来稍大，但用起来其实很简单。</p>
+</div>
+<div class="section" id="id7">
+<h2><a class="toc-backref" href="#id20">2.5&nbsp;&nbsp;&nbsp;快速入门</a></h2>
+<p>建立一个git版本库，比如叫做mynote。将本项目的所有内容复制到mynote里，必要的脚本如 <tt class="docutils literal">mynote/gsnote/gstat.py</tt> 和 <tt class="docutils literal">mynote/builtnote/buildnote.py</tt> 。</p>
+<p>进入 <tt class="docutils literal">mynote/gsnote/</tt> 目录里开始用rest编写笔记，注意扩展名为 &quot;.rst&quot; 。</p>
+<p>进入 <tt class="docutils literal">mynote/builtnote/</tt> 目录构建笔记，执行 <tt class="docutils literal">./builtnote.py</tt> 。</p>
+<p>用浏览器打开 <tt class="docutils literal">mynote/builtnote/index.html</tt> ，浏览自己的笔记。</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h1><a class="toc-backref" href="#id21">3&nbsp;&nbsp;&nbsp;使用规范</a></h1>
+<!-- todo 主动限制、md5避免重复、图片目录 -->
+</div>
+<div class="section" id="id9">
+<h1><a class="toc-backref" href="#id22">4&nbsp;&nbsp;&nbsp;笔记统计功能</a></h1>
+<!-- todo 笔记统计、进度、顶级书籍 -->
+</div>
+<div class="section" id="id10">
+<h1><a class="toc-backref" href="#id23">5&nbsp;&nbsp;&nbsp;日志、演讲稿</a></h1>
+<!-- todo -->
+</div>
+<div class="section" id="id11">
+<h1><a class="toc-backref" href="#id24">6&nbsp;&nbsp;&nbsp;版本库、同步建议</a></h1>
+<!-- todo -->
+</div>
+<div class="section" id="id12">
+<h1><a class="toc-backref" href="#id25">7&nbsp;&nbsp;&nbsp;绘图功能</a></h1>
+<!-- todo graphviz、svg、pil -->
+</div>
+<div class="section" id="id13">
+<h1><a class="toc-backref" href="#id26">8&nbsp;&nbsp;&nbsp;数学公式</a></h1>
+<!-- todo -->
+</div>
+</div>
+</body>
+</html>
+<!-- fileinfo= {"char_count": 2568, "title": "gsnote\u7b14\u8bb0\u7cfb\u7edf", "src_size": 4646, "filehash": "65baf512d3d2813fd4cd9611fee12bfa", "dst_size": 9401} -->
