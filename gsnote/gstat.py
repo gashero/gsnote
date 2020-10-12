@@ -34,32 +34,32 @@ def walktree(topdir,datadict):
             fi=open(fn_full,'rb')
             data=fi.read()
             fi.close()
-            imagelist=RE_IMAGE.findall(data)
+            imagelist=RE_IMAGE.findall(str(data))
             if imagelist:
                 bndirpath=os.path.join('../builtnote',dirpath)
                 for imagefn in imagelist:
                     newfullpath=os.path.normpath(os.path.join(bndirpath,imagefn))
                     if not os.path.exists(newfullpath):
-                        print 'LostImage[%s]=%s'%(fn_full,newfullpath)
-            if '\r' in data:
-                print 'DOSFILE: %s'%fullpath
+                        print('LostImage[%s]=%s'%(fn_full,newfullpath))
+            if '\r' in str(data):
+                print('DOSFILE: %s'%(fn_full,))
             try:
                 data_unicode=data.decode('utf-8')
             except UnicodeDecodeError:
-                print 'GBKFILE: %s'%fn_full
+                print('GBKFILE: %s'%(fn_full,))
             blank_count=data_unicode.count(' ')
             if blank_count>0 and len(data_unicode)*1.0/blank_count<2.8:
-                print 'MANY BLANK: %s [%d/%d]'%(
-                        fn_full,blank_count,len(data_unicode))
+                print('MANY BLANK: %s [%d/%d]'%(
+                        fn_full,blank_count,len(data_unicode)))
             if len(data_unicode)<1000:
-                print 'SMALLFILE: %s [%d]'%(fn_full,len(data_unicode))
+                print('SMALLFILE: %s [%d]'%(fn_full,len(data_unicode)))
             datadict['cnt_chars']+=len(data_unicode)
             datadict['@page']+=data_unicode.count(u'@page')
             datadict['@wait']+=data_unicode.count(u'@wait')
             if len(data_unicode)>50000:
                 datadict['topchars'].append((fn_full,len(data_unicode)))
             if fn.rsplit('.',1)[-1] not in ('rst','py'):
-                print 'OTHERFILE: %s'%(fn_full,)
+                print('OTHERFILE: %s'%(fn_full,))
     return
 
 def get_progress(fn_rst):
@@ -86,9 +86,9 @@ def get_progress(fn_rst):
 
 def newdaily(yyyyqn):
     """生成新的行程管理页面"""
-    fn_daily='mindcontrol/daily/%s.rst'%yyyyqn
+    fn_daily='thought/daily/%s.rst'%yyyyqn
     if os.path.exists(fn_daily):
-        print '%s existed!'%fn_daily
+        print('%s existed!'%(fn_daily,))
         return
     maxday=0
     yyyy=int(yyyyqn[:4])
@@ -133,6 +133,26 @@ def newdaily(yyyyqn):
     fo.close()
     return
 
+def bookdone(topdir='.'):
+    """分析那些已经看完的书籍"""
+    for (dirpath,dnlist,fnlist) in os.walk(topdir):
+        if dirpath.startswith('./.git'):
+            continue
+        for fn in fnlist:
+            if not fn.startswith('book_'):
+                continue
+            fn_full=os.path.join(dirpath,fn)
+            with open(fn_full,'rU') as fi:
+                data=fi.read()
+            cnt_bookmark=0
+            cnt_bookmark+=data.count('@page')
+            cnt_bookmark+=data.count('@wait')
+            if cnt_bookmark==0:
+                if not data.endswith('@done\n'):
+                    print('not done','x'*20)
+                print(fn_full)
+    return
+
 def main():
     datadict={
             'cnt_bytes':      0,
@@ -149,22 +169,24 @@ def main():
     datadict['topchars'].sort(key=lambda x:x[1],reverse=True)
     for k in ('cnt_bytes','cnt_rst','cnt_chars','chars/papers',
             'time_now'):
-        print '%-16s%s'%(k,datadict[k])
+        print('%-16s%s'%(k,datadict[k]))
     if len(sys.argv)>1:
         if sys.argv[1]=='topchars':
             for (fn_full, chars) in datadict['topchars']:
-                print '%-60s\t%d'%(fn_full,chars)
+                print('%-60s\t%d'%(fn_full,chars))
         elif sys.argv[1]=='bookmark':
             for k in ('@page','@wait'):
-                print '%-16s%s'%(k,datadict[k])
+                print('%-16s%s'%(k,datadict[k]))
         elif sys.argv[1]=='progress':
             fn_rst=sys.argv[2]
             progress=get_progress(fn_rst)
-            print progress
+            print(progress)
         elif sys.argv[1]=='newdaily':
             newdaily(sys.argv[2])
+        elif sys.argv[1]=='bookdone':
+            bookdone()
         else:
-            print 'Unknown command:',repr(sys.argv[1:])
+            print('Unknown command:',repr(sys.argv[1:]))
     return
 
 if __name__=='__main__':
