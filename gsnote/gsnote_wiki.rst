@@ -152,7 +152,85 @@ rest的入门可以参考 `A ReStructuredText Primer`_ 。
 笔记统计功能
 ==============
 
-.. todo 笔记统计、进度、顶级书籍
+笔记统计
+----------
+
+不带参数执行 ``gsnote.py`` 即可显示笔记统计。详尽的统计有助于促进自己多学习和记录::
+
+    $ ./gstat.py 
+    cnt_bytes       22360666
+    cnt_rst         1515
+    cnt_chars       13405272
+    chars/papers    8848.36
+    time_now        2020-10-12 14:26:31
+
+各个字段的解释：
+
+#. cnt_bytes：以字节计的笔记总量，只会记录reStructuredText格式的
+#. cnt_rst：reStructuredText格式的笔记篇数，即.rst文件数量
+#. cnt_chars：所有笔记的字符数，是以所有笔记解码为Unicode后统计的Unicode字符数
+#. chars/papers：平均每篇笔记的字符数
+#. time_now：此次统计时间
+
+书籍笔记进度统计
+------------------
+
+所有的笔记均可使用 ``@page <page1>-<page2>`` 形式来记录哪些还没学习的部分。通过这些标签可以统计出书籍笔记的阅读进度。参数为 progress 和笔记文件名，例如::
+
+    $ ./gstat.py progress ml/book_深度学习入门_基于Python的理论与实现.rst 
+    cnt_bytes       22361349
+    cnt_rst         1515
+    cnt_chars       13405713
+    chars/papers    8848.66
+    time_now        2020-10-12 14:29:04
+    {'maxpage': 278, 'cnt_bookmark': 33, 'unread': 216}
+
+最后一行的dict里字段解释：
+
+#. maxpage：根据 `@page` 书签记录的最大页码，可以当作书籍总页数
+#. cnt_bookmarks： `@page` 书签数量
+#. unread：未读的页数，每个 `@page` 里page2-page1得到的数字的累计
+
+顶级笔记统计
+--------------
+
+使用 `topchars` 参数，可以统计那些字数在5万字以上的笔记，用以统计和激励自己的学习。例如::
+
+    $ ./gstat.py topchars
+    cnt_bytes       22362189
+    cnt_rst         1515
+    cnt_chars       13406271
+    chars/papers    8849.02
+    time_now        2020-10-12 14:32:49
+    ./python/book_Python2.1宝典.rst                           	211992
+    ./computer/erlang/book_Programming_Erlang_En.rst            	167255
+    ./computer/java/book_Java2教程_第五版.rst              	130186
+    ./computer/lua/book_Lua程序设计_2nd.rst                 	114107
+    ./linux/book_Linux应用程序开发_2nd.rst                	99435
+    ./python/twisted/book_Twisted网络编程必备.rst         	94535
+    ./multimedia/vision/article_opencv_python_tutorial.rst      	91440
+    ./linux/book_Linux下的C编程.rst                         	85533
+
+每一行是笔记文件名和字数。
+
+完成笔记统计
+--------------
+
+书籍类的笔记，如果记录完成，可以在最后加上标签 `@done` 。随后就可以统计出来这些完成的书籍笔记。例如::
+
+    $ ./gstat.py bookdone
+    cnt_bytes       22363143
+    cnt_rst         1515
+    cnt_chars       13407059
+    chars/papers    8849.54
+    time_now        2020-10-12 14:34:18
+    ./arm/book_armcortexm3外围接口电路与工程实践基础应用.rst
+    ./aviation/aircraft/book_无人机DIY.rst
+    ./aviation/aircraft/book_无人机_引领空中机器人新革命.rst
+    ./business/quant/book_高频交易之战.rst
+    ./business/startup/book_创业的国度.rst
+    ./computer/java/book_Java2教程_第五版.rst
+    ./computer/lua/book_Lua程序设计_2nd.rst
 
 日志、演讲稿
 ==============
