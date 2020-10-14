@@ -63,7 +63,7 @@ def get_file_hash(filename):
     """使用文件计算MD5值得出哈希，比svn那个快好多，只要0.3秒
     就可以完成gsnote中603个文件的全部检查
     """
-    ff=open(filename,'rU')
+    ff=open(filename,'rb')
     data=ff.read()
     ff.close()
     mm=hashlib.md5(data)
@@ -111,7 +111,7 @@ class TravelDirTree(object):
                 elif df=='gstat.py':
                     pass
                 else:
-                    print 'OTHER FILE: %s'%os.path.join(nowdir,df)
+                    print('OTHER FILE: %s'%os.path.join(nowdir,df))
             elif os.path.isdir(fullpath):
                 if df not in ('.svn','.hg','.git','_images'):
                     #self.do_dir(os.path.join(nowdir,df))
@@ -120,7 +120,7 @@ class TravelDirTree(object):
                 else:
                     pass
             else:
-                print 'OTHER DF: %s'%os.path.join(nowdir,df)
+                print('OTHER DF: %s'%os.path.join(nowdir,df))
         showlist=[]
         rst_count=len(rstfile_list)
         for df in dir_list:
@@ -169,19 +169,19 @@ class TravelDirTree(object):
         if dst_filelist:
             for f in dst_filelist:
                 f=f.replace('.rst','.html')
-                print '[useless]',os.path.join(nowdir,f)
+                print('[useless]',os.path.join(nowdir,f))
         return {'rst_bytes':rst_bytes,
                 'html_bytes':html_bytes,
                 'char_count':char_count,
                 'rst_count':rst_count,}
 
     def do_dir(self,dirname):
-        #print '[dir ]',dirname
+        #print('[dir ]',dirname)
         if not os.path.exists(dirname):
             os.mkdir(dirname)
             os.system('cp %s %s'%('_rst.css',dirname))
         elif not os.path.isdir(dirname):
-            raise RuntimeError,'%s is not a dir'%dirname
+            raise RuntimeError('%s is not a dir'%dirname)
         else:
             pass    #dir is exist
         return
@@ -204,7 +204,7 @@ def build_rstfile(filename_rst,rootpath):
             return fileinfo
     except KeyError:
         pass
-    print '[rst ]',filename_rst
+    print('[rst ]',filename_rst)
     if os.path.split(filename_html)[0]:
         os.chdir(os.path.split(filename_html)[0])
     else:
@@ -324,7 +324,7 @@ class PillowDraw(Directive):
             }
 
     def run(self):
-        #print repr(self.content)
+        #print(repr(self.content))
         from PIL import Image
         from PIL import ImageDraw
         filename=self.options['filename']
@@ -332,7 +332,7 @@ class PillowDraw(Directive):
         height=int(self.options['height'])
         image=Image.new('RGBA',(width,height),(0,0,0,0))
         draw=ImageDraw.Draw(image)
-        exec '\n'.join(self.content)
+        exec('\n'.join(self.content))
         image.save('_images/%s'%filename)
         htmlimage='<img src="_images/%s" />\n'%filename
         return [nodes.raw('',htmlimage,format='html')]
@@ -343,7 +343,7 @@ def main():
     time_start=time.time()
     if len(sys.argv)==1:
         tdt=TravelDirTree('../gsnote')
-        #print tdt.rootpath
+        #print(tdt.rootpath)
         try:
             tdt.run()
         except KeyboardInterrupt:
@@ -370,7 +370,7 @@ def main():
         else:
             raise RuntimeError('%s not exist'%fn)
     time_stop=time.time()
-    print 'Time spend: %.03f'%(time_stop-time_start)
+    print('Time spend: %.03f'%(time_stop-time_start))
     return
 
 if __name__=='__main__':
